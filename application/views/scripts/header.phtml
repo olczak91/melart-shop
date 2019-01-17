@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+    <head>
+    	<title><?= $this->escape($this->title); ?></title>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    	<meta name="description" content="Micadoni Home - Armchairs, sofas and chairs. Let's check our offer!" />
+    	<meta name="keywords" content="Micadoni Home, armchairs, sofas, chairs, furniture" />
+    	<meta name="robots" content="index, follow"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="icon" type="image/png" href="<?php echo $this->baseUrl; ?>/fav.png" />
+        <link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/css/style.css">
+    </head>
+    <body>
+    <div id="loader"></div>
+    <header>
+        <div id="top">
+            <div class="content">
+                <figure>
+                    <a href="<?= $this->baseUrl; ?>/"><img src="<?= $this->baseUrl; ?>/img/logo.png" alt="micadoni home"></a>
+                </figure>
+                 <img id="res" src="<?= $this->baseUrl; ?>/img/menu.png" alt="">
+                     <nav>
+                        <a <?= ($this->active == "home") ? 'class="active"' : null; ?> href="<?= $this->baseUrl; ?>/">Home</a>
+                        <a <?= ($this->active == "collection") ? 'class="active"' : null; ?> href="<?= $this->baseUrl; ?>/collection">Collection</a>
+                    </nav>
+                <div id="cart">
+                    <a href="<?= $this->baseUrl; ?>/cart">
+                        <img src="<?= $this->baseUrl; ?>/img/cart1.png" alt="">
+                        <span><?= (isset($_SESSION['cart'])) ? count($_SESSION['cart']) : '0'; ?></span>
+                    </a>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </header>

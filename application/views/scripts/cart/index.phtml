@@ -1,0 +1,172 @@
+<?php echo $this->render('header.phtml'); ?>
+	<div class="wrapper" id="products-wrapper">
+		<div class="content">
+			<h1 class="page-title"><span>Micadoni Home</span> - Cart</h1>
+			<?php if (isset($_SESSION['cart'])) { ?>
+					<?php if (count($_SESSION['cart']) > 0) { ?>
+						<table id="cart-table">
+							<tr>
+								<td class="product">Product</td>
+								<td class="price">Price</td>
+								<td class="quantity">Quantity</td>
+								<td class="total">Total</td>
+							</tr>
+							<?php $products_images = new Application_Model_DbTable_ProductImages();
+								  for ($i=0; $i < count($this->products); $i++):
+								  $images_selected = $products_images->fetchAll($products_images->select()->where('belongs_to_product = ?', $this->products[$i]->product_id)->order('image_order ASC'));
+								  if (count($images_selected)) {
+										$image = $images_selected[0]->image;
+								  } else $image = 'not-available.jpg';
+							?>
+									<tr>
+										<td class="product">
+											<div class="container" style="background: url('<?= $this->baseUrl; ?>/products/min/<?= $image; ?>') center center no-repeat; background-size: 50px;"></div>
+											<span><?= $this->products[$i]->product_name; ?></span>
+											<a class="remove" href="<?= $this->baseUrl; ?>/cart/remove-product/id/<?= $this->products[$i]->product_id; ?>">x</a>
+										</td>
+										<td class="price">&euro; <?= $this->products[$i]->product_price; ?></td>
+										<td class="quantity">
+											<form method="post" action="<?= $this->baseUrl; ?>/cart/update-cart">
+												<input type="number" name="quantity" value="<?= $_SESSION['cart'][$this->products[$i]->product_id]['product_quantity']; ?>" min="1" max="100">
+												<input type="hidden" name="product_id" value="<?= $this->products[$i]->product_id; ?>">
+												<input type="submit" value="">
+											</form>
+										</td>
+										<td class="total">&euro; <?= $_SESSION['cart'][$this->products[$i]->product_id]['total_product_price']; ?></td>
+									</tr>
+							<?php endfor; ?>
+						</table>
+						<div id="summary">
+							<p>Total: &euro; <?= $this->escape($this->total_cart_price); ?></p>
+						</div>
+						<h2>Personal data</h2>
+						<form id="personal-data" method="post" action="<?= $this->baseUrl; ?>/cart/confirmation">
+							<div class="col">
+								<label class="required">First name</label>
+								<input class="req" type="text" name="first_name" value="<?= ($this->client['first_name'] != '') ? $this->client['first_name'] : ''; ?>">
+								<label class="required">Last name</label>
+								<input class="req" type="text" name="last_name" value="<?= ($this->client['last_name'] != '') ? $this->client['last_name'] : ''; ?>">
+								<label>Company name</label>
+								<input type="text" name="company_name" value="<?= ($this->client['company_name'] != '') ? $this->client['company_name'] : ''; ?>">
+								<label class="required">Country</label>
+								<input class="req" type="text" name="country" value="<?= ($this->client['country'] != '') ? $this->client['country'] : ''; ?>">
+								<label class="required">City</label>
+								<input class="req" type="text" name="city" value="<?= ($this->client['city'] != '') ? $this->client['city'] : ''; ?>">
+							</div>
+							<div class="col">
+								<label class="required">Address</label>
+								<input class="req" type="text" name="address" value="<?= ($this->client['address'] != '') ? $this->client['address'] : ''; ?>">
+								<label>Appartment</label>
+								<input type="text" name="appartment" value="<?= ($this->client['appartment'] != '') ? $this->client['appartment'] : ''; ?>">
+								<label class="required">Postal code</label>
+								<input class="req" type="text" name="code" value="<?= ($this->client['code'] != '') ? $this->client['code'] : ''; ?>">
+								<label class="required">Telephone</label>
+								<input class="req" type="text" name="telephone" value="<?= ($this->client['telephone'] != '') ? $this->client['telephone'] : ''; ?>">
+								<label class="required">E-mail</label>
+								<input class="req" type="email" name="email" value="<?= ($this->client['email'] != '') ? $this->client['email'] : ''; ?>">
+							</div>
+							<label>Message</label>
+							<textarea name="message"><?= ($this->client['message'] != '') ? $this->client['message'] : ''; ?></textarea>
+							<input id="validate" type="submit" value="Process order">
+							<div class="clear"></div>
+						</form>
+					<?php } else { ?>
+						<div id="subpage-msg">
+							<p> Your cart is empty :(</p>
+						</div>
+					<?php }?>
+					<?php } else { ?>
+						<div id="subpage-msg">
+							<p> Your cart is empty :(</p>
+						</div>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+<?php echo $this->render('footer.phtml'); ?>
+<!--
+<?php echo $this->render('header.phtml'); ?>
+	<div id="cart-wrapper">
+		<div class="content">
+			<h3 id="title">Your cart</h3>
+			<?php if (isset($_SESSION['cart'])) { ?>
+				<?php if (count($_SESSION['cart']) > 0) { ?>
+					<table id="cart-table">
+						<tr>
+							<td class="product">Product</td>
+							<td class="price">Price</td>
+							<td class="quantity">Quantity</td>
+							<td class="total">Total</td>
+						</tr>
+						<?php $products_images = new Application_Model_DbTable_ProductImages();
+							  for ($i=0; $i < count($this->products); $i++):
+							  $images_selected = $products_images->fetchAll($products_images->select()->where('belongs_to_product = ?', $this->products[$i]->product_id)->order('image_order ASC'));
+							  if (count($images_selected)) {
+									$image = $images_selected[0]->image;
+							  } else $image = 'not-available.jpg';
+						?>
+								<tr>
+									<td class="product">
+										<div class="container" style="background: url('<?= $this->baseUrl; ?>/products/min/<?= $image; ?>') center center no-repeat; background-size: 50px 50px;"></div>
+										<span><?= $this->products[$i]->product_name; ?></span>
+										<a class="remove" href="<?= $this->baseUrl; ?>/cart/remove-product/id/<?= $this->products[$i]->product_id; ?>">x</a>
+									</td>
+									<td class="price">&euro; <?= $this->products[$i]->product_price; ?></td>
+									<td class="quantity">
+										<form method="post" action="<?= $this->baseUrl; ?>/cart/update-cart">
+											<input type="number" name="quantity" value="<?= $_SESSION['cart'][$this->products[$i]->product_id]['product_quantity']; ?>" min="1" max="100">
+											<input type="hidden" name="product_id" value="<?= $this->products[$i]->product_id; ?>">
+											<input type="submit" value="">
+										</form>
+									</td>
+									<td class="total">&euro; <?= $_SESSION['cart'][$this->products[$i]->product_id]['total_product_price']; ?></td>
+								</tr>
+						<?php endfor; ?>
+					</table>
+					<div id="summary">
+						<p>Total: &euro; <?= $this->escape($this->total_cart_price); ?></p>
+					</div>
+					<h2>Personal data</h2>
+					<form id="personal-data" method="post" action="<?= $this->baseUrl; ?>/cart/confirmation">
+						<div class="col">
+							<label class="required">First name</label>
+							<input class="req" type="text" name="first_name" value="<?= ($this->client['first_name'] != '') ? $this->client['first_name'] : ''; ?>">
+							<label class="required">Last name</label>
+							<input class="req" type="text" name="last_name" value="<?= ($this->client['last_name'] != '') ? $this->client['last_name'] : ''; ?>">
+							<label>Company name</label>
+							<input type="text" name="company_name" value="<?= ($this->client['company_name'] != '') ? $this->client['company_name'] : ''; ?>">
+							<label class="required">Country</label>
+							<input class="req" type="text" name="country" value="<?= ($this->client['country'] != '') ? $this->client['country'] : ''; ?>">
+							<label class="required">City</label>
+							<input class="req" type="text" name="city" value="<?= ($this->client['city'] != '') ? $this->client['city'] : ''; ?>">
+						</div>
+						<div class="col">
+							<label class="required">Address</label>
+							<input class="req" type="text" name="address" value="<?= ($this->client['address'] != '') ? $this->client['address'] : ''; ?>">
+							<label>Appartment</label>
+							<input type="text" name="appartment" value="<?= ($this->client['appartment'] != '') ? $this->client['appartment'] : ''; ?>">
+							<label class="required">Postal code</label>
+							<input class="req" type="text" name="code" value="<?= ($this->client['code'] != '') ? $this->client['code'] : ''; ?>">
+							<label class="required">Telephone</label>
+							<input class="req" type="text" name="telephone" value="<?= ($this->client['telephone'] != '') ? $this->client['telephone'] : ''; ?>">
+							<label class="required">E-mail</label>
+							<input class="req" type="email" name="email" value="<?= ($this->client['email'] != '') ? $this->client['email'] : ''; ?>">
+						</div>
+						<label>Message</label>
+						<textarea name="message"><?= ($this->client['message'] != '') ? $this->client['message'] : ''; ?></textarea>
+						<input id="validate" type="submit" value="Process order">
+						<div class="clear"></div>
+					</form>
+				<?php } else { ?>
+					<div id="subpage-msg">
+						<p> Your cart is empty :(</p>
+					</div>
+				<?php }?>
+				<?php } else { ?>
+					<div id="subpage-msg">
+						<p> Your cart is empty :(</p>
+					</div>
+			<?php } ?>
+		</div>
+	</div>
+<?php echo $this->render('footer.phtml'); ?>

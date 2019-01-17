@@ -1,0 +1,17 @@
+<?php echo $this->render('admin/headerAdmin.phtml'); ?>
+	<div class="wrapper">
+		<div class="content">
+			<?php echo $this->render('admin/menu.phtml'); ?>
+			<?= $this->messages[0] ?>
+			<h1>Edit slide</h1>
+			<h2>Update image</h2>
+			<form class="standard-form" method="POST" action="<?php echo $this->baseUrl; ?>/admin/update-slide" enctype="multipart/form-data">
+				<label class="required">Choose photo</label>
+				<input type="file" name="image" required>
+				<input type="hidden" name="slide_id" value="<?= $this->slides->slide_id; ?>">
+				<input id="submit" type="submit" value="Update image">
+			</form>
+			<img style="width: 100%;" src="<?= $this->baseUrl; ?>/slides/<?= $this->slide->image; ?>" alt="">
+		</div>
+	</div>
+<?php echo $this->render('admin/footerAdmin.phtml'); ?>

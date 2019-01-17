@@ -1,0 +1,17 @@
+<?php echo $this->render('admin/headerAdmin.phtml'); ?>
+	<div class="wrapper">
+		<div class="content">
+			<?php echo $this->render('admin/menu.phtml'); ?>
+			<?= $this->messages[0] ?>
+			<h1>Edit category</h1>
+			<form class="standard-form" method="POST" action="<?= $this->baseUrl; ?>/admin/update-category">
+				<input type="hidden" name="category_id" value="<?= $this->category->category_id; ?>">
+				<label class="required">Category name</label>
+				<input type="text" name="category_name" value="<?= $this->category->category_name; ?>" required>
+				<label>Category description</label>
+				<textarea name="category_description"><?= $this->category->category_description ? $this->category->category_description : ''; ?></textarea>
+				<input id="submit" type="submit" value="Save changes">
+			</form>
+		</div>
+	</div>
+<?php echo $this->render('admin/footerAdmin.phtml'); ?>

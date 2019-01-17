@@ -1,0 +1,21 @@
+<?php echo $this->render('admin/headerAdmin.phtml'); ?>
+	<div class="wrapper">
+		<div class="content">
+			<?php echo $this->render('admin/menu.phtml'); ?>
+			<?= $this->messages[0] ?>
+			<h1>Manage categories</h1>
+			<div id="categories">
+				<?php for ($i=0; $i < count($this->categories); $i++): ?>
+					<div class="category">
+						<p><?= $this->categories[$i]->category_name; ?></p>
+						<div class="manage">
+							<a onclick="return confirm('Do you really want to delete this category?')" href="<?= $this->baseUrl; ?>/admin/delete-category/id/<?= $this->categories[$i]->category_id; ?>">Delete</a>
+							<a href="<?= $this->baseUrl; ?>/admin/edit-category/id/<?= $this->categories[$i]->category_id; ?>">Edit</a>
+						</div>
+						<div class="clear"></div>
+					</div>
+				<?php endfor; ?>
+			</div>
+		</div>
+	</div>
+<?php echo $this->render('admin/footerAdmin.phtml'); ?>

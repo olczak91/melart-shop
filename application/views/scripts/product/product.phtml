@@ -1,0 +1,48 @@
+<?php echo $this->render('header.phtml'); ?>
+	<div class="wrapper" id="products-wrapper">
+		<div id="products">
+			<div class="content">
+				<h1 class="page-title"><span>Micadoni Home</span> - <?= $this->product->product_name; ?></h1>
+				<nav id="categories">
+					<a href="<?= $this->baseUrl; ?>/collection">Collection</a>
+					<a href="<?= $this->baseUrl; ?>/collection/<?= $this->parent_category->category_nicelink; ?>,<?= $this->parent_category->category_id; ?>"><?= $this->escape($this->parent_category->category_name); ?></a>
+					<a class="active"><?= $this->escape($this->product->product_name); ?></a>
+				</nav>
+				<div id="product">
+					<h2><?= $this->product->product_name; ?></h2>
+					<?php
+						if (isset($this->messages[0])) {
+							echo $this->messages[0];
+						}
+					?>
+					<div id="product-img">
+						<a data-fancybox="gallery" href="<?= $this->baseUrl; ?>/products/<?= $this->product_images[0]->image; ?>">
+							<img id="main-img" src="<?= $this->baseUrl; ?>/products/min/<?= $this->product_images[0]->image; ?>" alt="<?= $this->escape($this->product->product_name); ?>">
+							<div id="thumbnails">
+								<?php for ($i=1; $i < count($this->product_images); $i++): ?>
+									<a data-fancybox="gallery" href="<?= $this->baseUrl; ?>/products/<?= $this->product_images[$i]->image; ?>"><div class="container" style="background: url('<?= $this->baseUrl; ?>/products/min/<?= $this->product_images[$i]->image; ?>') center center no-repeat; background-size: cover;"></div></a>
+								<?php endfor; ?>
+							</div>
+						</a>
+					</div>
+					<div id="product-right">
+						<p id="product-price">Price: &euro; <?= $this->escape($this->product->product_price); ?></p>
+						<form id="add-to-cart" method="post" action="<?= $this->baseUrl; ?>/cart/add-to-cart">
+							<input type="number" name="qty" value="1" min="1" max="100">
+							<input type="hidden" name="product_id" value="<?= $this->product->product_id; ?>">
+							<input type="submit" value="Add to cart">
+						</form>
+						<div id="desc">
+							<?= $this->product->product_description; ?>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<?php if(!is_null($this->product->technical_image)): ?>
+						<img id="technical-image" src="<?= $this->baseUrl; ?>/technical/<?= $this->product->technical_image; ?>" alt="technical image">
+					<?php endif; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php echo $this->render('spacer.phtml'); ?>
+<?php echo $this->render('footer.phtml'); ?>

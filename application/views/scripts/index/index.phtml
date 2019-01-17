@@ -1,0 +1,27 @@
+<?php echo $this->render('header.phtml'); ?>
+	<?php echo $this->render('slider.phtml'); ?>
+	<div class="wrapper">
+		<div class="content">
+			<h1 class="page-title"><span>Melart Home</span> - Armchairs, sofas</h1>
+			<div id="products">
+				<?php 
+					$products_images = new Application_Model_DbTable_ProductImages();
+					for ($i=0; $i < count($this->products); $i++):
+						$images_selected = $products_images->fetchAll($products_images->select()->where('belongs_to_product = ?', $this->products[$i]->product_id)->order('image_order ASC'));
+						if (count($images_selected)) {
+							$image = $images_selected[0]->image;
+					} else $image = 'not-available.png';
+				?>
+					<a href="<?= $this->baseUrl; ?>/product/<?= $this->products[$i]->product_nicelink; ?>,<?= $this->products[$i]->product_id; ?>">
+						<div class="item">
+							<img src="<?= $this->baseUrl; ?>/products/min/<?= $image; ?>" alt="<?= $this->products[$i]->product_name; ?>">
+							<h3><?= $this->products[$i]->product_name; ?></h3>
+							<p>&euro;<?= $this->products[$i]->product_price; ?></p>
+						</div>
+					</a>
+				<?php endfor; ?>
+			</div>
+		</div>
+		<?php echo $this->render('spacer.phtml'); ?>
+	</div>
+<?php echo $this->render('footer.phtml'); ?>

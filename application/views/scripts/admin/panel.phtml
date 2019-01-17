@@ -1,0 +1,26 @@
+<?php echo $this->render('admin/headerAdmin.phtml'); ?>
+	<div class="wrapper">
+		<div class="content">
+			<?php echo $this->render('admin/menu.phtml'); ?>
+			<?= $this->messages[0] ?>
+			<h1>Add product</h1>
+			<form class="standard-form" method="POST" action="<?php echo $this->baseUrl; ?>/admin/panel" enctype="multipart/form-data">
+				<label class="required">Product name</label>
+				<input type="text" name="product_name" required>
+				<label class="required">Product price</label>
+				<input type="text" name="product_price" required>
+				<label class="required">Product description</label>
+				<textarea name="product_description" id="product_description" required></textarea>
+				<label class="required">Belongs to category</label>
+				<select name="belongs_to_category">
+					<?php for ($i=0; $i < count($this->categories); $i++): ?>
+						<option value="<?= $this->categories[$i]->category_id ?>"><?= $this->categories[$i]->category_name ?></option>
+					<?php endfor; ?>
+				</select>
+				<label class="required">Choose photos</label>
+				<input type="file" name="images[]" multiple required>
+				<input id="submit" type="submit" value="Add product">
+			</form>
+		</div>
+	</div>
+<?php echo $this->render('admin/footerAdmin.phtml'); ?>

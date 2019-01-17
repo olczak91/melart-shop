@@ -1,0 +1,30 @@
+	<footer>
+		<div class="content">
+			<img src="<?php echo $this->baseUrl; ?>/img/admin/logo.jpg" alt="besolux">
+		</div>
+	</footer>
+	<script src="<?php echo $this->baseUrl; ?>/js/ckeditor/ckeditor.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+	<script type="text/javascript">
+		$(document).ready(function(){
+			 CKEDITOR.replace( 'product_description' );
+			$("#photos").sortable({ 
+			    update : function () {
+			      $("#ajax-loader").fadeIn();
+			      var order = [],
+			      i = 0;
+			      $('#photos .item').each(function(){
+			        var that = $(this);
+			        order[that.attr('data-id')] = i++;
+			      });
+			      $.post("<?php echo $this->baseUrl; ?>/admin/sort-product-images", {"order[]": order}).done(function(data){
+			        if (data == 1)
+			        $("#ajax-loader").fadeOut();
+			        $(".ajax-message").fadeIn().delay(3000).fadeOut();
+			      }); 
+			    } 
+			});
+		});
+	</script>
+	</body>
+</html>

@@ -1,0 +1,81 @@
+<?php echo $this->render('header.phtml'); ?>
+	<div class="wrapper" id="products-wrapper">
+		<div class="content">
+			<h1 class="page-title"><span>Micadoni Home</span> - Cart</h1>
+			<?php if (isset($_SESSION['cart'])) { ?>
+					<?php if (count($_SESSION['cart']) > 0) { ?>
+						<table id="cart-table">
+							<tr>
+								<td class="product">Product</td>
+								<td class="price">Price</td>
+								<td class="quantity">Quantity</td>
+								<td class="total">Total</td>
+							</tr>
+							<?php $products_images = new Application_Model_DbTable_ProductImages();
+								  for ($i=0; $i < count($this->products); $i++):
+								  $images_selected = $products_images->fetchAll($products_images->select()->where('belongs_to_product = ?', $this->products[$i]->product_id)->order('image_order ASC'));
+								  if (count($images_selected)) {
+										$image = $images_selected[0]->image;
+								  } else $image = 'not-available.jpg';
+							?>
+									<tr>
+										<td class="product">
+											<div class="container" style="background: url('<?= $this->baseUrl; ?>/products/min/<?= $image; ?>') center center no-repeat; background-size: 50px;"></div>
+											<span><?= $this->products[$i]->product_name; ?></span>
+										</td>
+										<td class="price">&euro; <?= $this->products[$i]->product_price; ?></td>
+										<td class="quantity"><?= $_SESSION['cart'][$this->products[$i]->product_id]['product_quantity']; ?></td>
+										<td class="total">&euro; <?= $_SESSION['cart'][$this->products[$i]->product_id]['total_product_price']; ?></td>
+									</tr>
+							<?php endfor; ?>
+						</table>
+						<div id="summary">
+							<p>Total: &euro; <?= $this->escape($this->total_cart_price); ?></p>
+						</div>
+						<h2>Personal data</h2>
+						<div id="personal-data">
+							<div class="col">
+								<label>First name</label>
+								<input disabled value="<?= ($this->client['first_name'] != '') ? $this->client['first_name'] : ''; ?>">
+								<label>Last name</label>
+								<input disabled value="<?= ($this->client['last_name'] != '') ? $this->client['last_name'] : ''; ?>">
+								<label>Company name</label>
+								<input disabled value="<?= ($this->client['company_name'] != '') ? $this->client['company_name'] : ''; ?>">
+								<label>Country</label>
+								<input disabled value="<?= ($this->client['country'] != '') ? $this->client['country'] : ''; ?>">
+								<label>City</label>
+								<input disabled value="<?= ($this->client['city'] != '') ? $this->client['city'] : ''; ?>">
+							</div>
+							<div class="col">
+								<label>Address</label>
+								<input disabled value="<?= ($this->client['address'] != '') ? $this->client['address'] : ''; ?>">
+								<label>Appartment</label>
+								<input disabled value="<?= ($this->client['appartment'] != '') ? $this->client['appartment'] : ''; ?>">
+								<label>Postal code</label>
+								<input disabled value="<?= ($this->client['code'] != '') ? $this->client['code'] : ''; ?>">
+								<label>Telephone</label>
+								<input disabled value="<?= ($this->client['telephone'] != '') ? $this->client['telephone'] : ''; ?>">
+								<label>E-mail</label>
+								<input disabled value="<?= ($this->client['email'] != '') ? $this->client['email'] : ''; ?>">
+							</div>
+							<label>Message</label>
+							<textarea disabled><?= ($this->client['message'] != '') ? $this->client['message'] : ''; ?></textarea>
+							<p id="accept-terms">I hereby declare I've read and accept Terms & Conditions</p>
+							<a href="<?= $this->baseUrl; ?>/cart/process-order"><input type="submit" value="Process order"></a>
+							<a id="modifyOrder" href="<?= $this->baseUrl; ?>/cart"><< Modify order</a>
+							<div class="clear"></div>
+						</div>
+					<?php } else { ?>
+						<div id="subpage-msg">
+							<p> Your cart is empty :(</p>
+						</div>
+					<?php }?>
+					<?php } else { ?>
+						<div id="subpage-msg">
+							<p> Your cart is empty :(</p>
+						</div>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+<?php echo $this->render('footer.phtml'); ?>

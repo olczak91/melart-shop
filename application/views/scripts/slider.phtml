@@ -1,0 +1,7 @@
+<div class="bxslider">
+  <?php for($i=0; $i<count($this->slides); $i++): ?>
+  		<div class="slide" style="background: url('<?= $this->baseUrl; ?>/slides/<?= $this->slides[$i]->image; ?>') center 100% no-repeat; background-size: cover;">
+  			<p><span>Melart Home</span> - Armchairs, sofas</p>
+  		</div>
+  <?php endfor; ?>
+</div>

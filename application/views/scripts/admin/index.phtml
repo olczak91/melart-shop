@@ -1,0 +1,15 @@
+<?php echo $this->render('admin/headerAdmin.phtml'); ?>
+	<div class="wrapper">
+		<div class="content">
+			<?= $this->messages[0] ?>
+			<h1>Login</h1>
+			<form class="standard-form" method="POST" action="<?php echo $this->baseUrl; ?>/admin/login">
+				<label>Login (*)</label>
+				<input type="text" name="login">
+				<label>Password (*)</label>
+				<input type="password" name="password">
+				<input id="submit" type="submit" value="Login">
+			</form>
+		</div>
+	</div>
+<?php echo $this->render('admin/footerAdmin.phtml'); ?>
